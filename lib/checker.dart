@@ -33,7 +33,7 @@ class Checker {
     return false;
   }
 
-  int getCubeRoot(int number) {
+  static int getCubeRoot(int number) {
     int? cubeRoot;
     if (number > 0) {
       cubeRoot = pow(number, 1 / 3).round();

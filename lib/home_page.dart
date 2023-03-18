@@ -1,8 +1,8 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:tema3/checker.dart';
+import 'package:tema3/custom_colors.dart';
+import 'package:tema3/pop_up.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -12,11 +12,10 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  Color topColor = const Color(0xFF2877D0);
-  Color bottomColor = const Color(0xFF1B2C47); //used for shadows too
-  Color buttonColor = const Color(0xFF2260A8);
   final TextEditingController _controller = TextEditingController();
+  CustomColors customColors = CustomColors();
   Checker checker = Checker();
+  PopUp popUp = PopUp();
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +23,7 @@ class _HomePageState extends State<HomePage> {
       body: DecoratedBox(
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: <Color>[topColor, bottomColor],
+            colors: <Color>[customColors.topColor, customColors.bottomColor],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
           ),
@@ -48,11 +47,11 @@ class _HomePageState extends State<HomePage> {
                 Container(
                   width: 180,
                   decoration: BoxDecoration(
-                    color: topColor,
+                    color: customColors.topColor,
                     borderRadius: BorderRadius.circular(20),
                     boxShadow: <BoxShadow>[
                       BoxShadow(
-                        color: bottomColor,
+                        color: customColors.bottomColor,
                         spreadRadius: 3,
                         blurRadius: 35,
                         offset: const Offset(0, 18),
@@ -81,19 +80,21 @@ class _HomePageState extends State<HomePage> {
                     TextButton(
                       onPressed: () {
                         final double number = double.parse(_controller.text);
-                        showPerfectCube(
+                        popUp.showPerfectCube(
+                          context: context,
                           isPerfectCube: checker.checkPerfectCube(number),
+                          titleNumber: _controller.text,
                         );
                       },
                       child: Container(
                         height: 52,
                         width: 70,
                         decoration: BoxDecoration(
-                          color: buttonColor,
+                          color: customColors.buttonColor,
                           borderRadius: BorderRadius.circular(20),
                           boxShadow: <BoxShadow>[
                             BoxShadow(
-                              color: bottomColor,
+                              color: customColors.bottomColor,
                               spreadRadius: 3,
                               blurRadius: 20,
                               offset: const Offset(0, 14),
@@ -115,19 +116,21 @@ class _HomePageState extends State<HomePage> {
                     TextButton(
                       onPressed: () {
                         final double number = double.parse(_controller.text);
-                        showPerfectSquare(
+                        popUp.showPerfectSquare(
+                          context: context,
                           isPerfectSquare: checker.checkPerfectSquare(number),
+                          titleNumber: _controller.text,
                         );
                       },
                       child: Container(
                         height: 52,
                         width: 70,
                         decoration: BoxDecoration(
-                          color: buttonColor,
+                          color: customColors.buttonColor,
                           borderRadius: BorderRadius.circular(20),
                           boxShadow: <BoxShadow>[
                             BoxShadow(
-                              color: bottomColor,
+                              color: customColors.bottomColor,
                               spreadRadius: 3,
                               blurRadius: 20,
                               offset: const Offset(0, 14),
@@ -149,20 +152,22 @@ class _HomePageState extends State<HomePage> {
                     TextButton(
                       onPressed: () {
                         final double number = double.parse(_controller.text);
-                        showAll(
+                        popUp.showAll(
+                          context: context,
                           isPerfectSquare: checker.checkPerfectSquare(number),
                           isPerfectCube: checker.checkPerfectCube(number),
+                          titleNumber: _controller.text,
                         );
                       },
                       child: Container(
                         height: 52,
                         width: 70,
                         decoration: BoxDecoration(
-                          color: buttonColor,
+                          color: customColors.buttonColor,
                           borderRadius: BorderRadius.circular(20),
                           boxShadow: <BoxShadow>[
                             BoxShadow(
-                              color: bottomColor,
+                              color: customColors.bottomColor,
                               spreadRadius: 3,
                               blurRadius: 20,
                               offset: const Offset(0, 14),
@@ -197,11 +202,11 @@ class _HomePageState extends State<HomePage> {
                         height: 52,
                         width: 70,
                         decoration: BoxDecoration(
-                          color: buttonColor,
+                          color: customColors.buttonColor,
                           borderRadius: BorderRadius.circular(20),
                           boxShadow: <BoxShadow>[
                             BoxShadow(
-                              color: bottomColor,
+                              color: customColors.bottomColor,
                               spreadRadius: 3,
                               blurRadius: 20,
                               offset: const Offset(0, 14),
@@ -232,11 +237,11 @@ class _HomePageState extends State<HomePage> {
                         height: 52,
                         width: 70,
                         decoration: BoxDecoration(
-                          color: buttonColor,
+                          color: customColors.buttonColor,
                           borderRadius: BorderRadius.circular(20),
                           boxShadow: <BoxShadow>[
                             BoxShadow(
-                              color: bottomColor,
+                              color: customColors.bottomColor,
                               spreadRadius: 3,
                               blurRadius: 20,
                               offset: const Offset(0, 14),
@@ -258,16 +263,18 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ),
                     TextButton(
-                      onPressed: showInfo,
+                      onPressed: () {
+                        popUp.showInfo(context: context);
+                      },
                       child: Container(
                         height: 52,
                         width: 70,
                         decoration: BoxDecoration(
-                          color: buttonColor,
+                          color: customColors.buttonColor,
                           borderRadius: BorderRadius.circular(20),
                           boxShadow: <BoxShadow>[
                             BoxShadow(
-                              color: bottomColor,
+                              color: customColors.bottomColor,
                               spreadRadius: 3,
                               blurRadius: 20,
                               offset: const Offset(0, 14),
@@ -296,295 +303,6 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
       ),
-    );
-  }
-
-  void showInfo() {
-    showDialog<Widget>(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          backgroundColor: topColor,
-          content: const Text(
-            'Introdu un numar si verifica daca este patrat perfect, cub perfect sau amandoua. '
-            'Butoanele X\u{00B2} si X\u{00B3} ofera exemple de patrate perfecte respectiv '
-            'cuburi perfecte.',
-            textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 17, color: Colors.white),
-          ),
-          actions: <Widget>[
-            Center(
-              child: TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: Container(
-                  height: 52,
-                  width: 70,
-                  decoration: BoxDecoration(
-                    color: buttonColor,
-                    borderRadius: BorderRadius.circular(20),
-                    boxShadow: <BoxShadow>[
-                      BoxShadow(
-                        color: bottomColor,
-                        spreadRadius: 3,
-                        blurRadius: 20,
-                        offset: const Offset(0, 14),
-                      )
-                    ],
-                  ),
-                  child: const Center(
-                    child: Padding(
-                      padding: EdgeInsets.all(10),
-                      child: Text(
-                        'Ok',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            )
-          ],
-        );
-      },
-    );
-  }
-
-  void showPerfectSquare({required bool isPerfectSquare}) {
-    int? number;
-    int? sqrRoot;
-    String title = 'nu este patrat perfect';
-    String ecuation = 'Numarul nu are radacina patrata';
-    if (isPerfectSquare) {
-      number = int.parse(_controller.text);
-      sqrRoot = sqrt(number).toInt();
-      title = 'este patrat perfect';
-      ecuation = '$number = $sqrRoot * $sqrRoot';
-    }
-
-    showDialog<Widget>(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          backgroundColor: topColor,
-          title: Text(
-            '${_controller.text} $title',
-            textAlign: TextAlign.center,
-            style: const TextStyle(fontSize: 24, color: Colors.white),
-          ),
-          content: Text(
-            ecuation,
-            textAlign: TextAlign.center,
-            style: const TextStyle(fontSize: 17, color: Colors.white),
-          ),
-          actions: <Widget>[
-            Center(
-              child: TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: Container(
-                  height: 52,
-                  width: 70,
-                  decoration: BoxDecoration(
-                    color: buttonColor,
-                    borderRadius: BorderRadius.circular(20),
-                    boxShadow: <BoxShadow>[
-                      BoxShadow(
-                        color: bottomColor,
-                        spreadRadius: 3,
-                        blurRadius: 20,
-                        offset: const Offset(0, 14),
-                      )
-                    ],
-                  ),
-                  child: const Center(
-                    child: Padding(
-                      padding: EdgeInsets.all(10),
-                      child: Text(
-                        'Ok',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            )
-          ],
-        );
-      },
-    );
-  }
-
-  void showPerfectCube({required bool isPerfectCube}) {
-    int? number;
-    int? cubeRoot;
-    String title = 'nu este cub perfect';
-    String ecuation = 'Numarul nu are radacina cubica';
-    if (isPerfectCube) {
-      number = int.parse(_controller.text);
-      if (number > 0) {
-        cubeRoot = pow(number, 1 / 3).round();
-      } else {
-        cubeRoot = pow(number.abs(), 1 / 3).round();
-        cubeRoot = -cubeRoot;
-      }
-      ecuation = '$number = $cubeRoot * $cubeRoot * $cubeRoot';
-      title = 'este cub perfect';
-    }
-
-    showDialog<Widget>(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          backgroundColor: topColor,
-          title: Text(
-            '${_controller.text} $title',
-            textAlign: TextAlign.center,
-            style: const TextStyle(fontSize: 24, color: Colors.white),
-          ),
-          content: Text(
-            ecuation,
-            textAlign: TextAlign.center,
-            style: const TextStyle(fontSize: 17, color: Colors.white),
-          ),
-          actions: <Widget>[
-            Center(
-              child: TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: Container(
-                  height: 52,
-                  width: 70,
-                  decoration: BoxDecoration(
-                    color: buttonColor,
-                    borderRadius: BorderRadius.circular(20),
-                    boxShadow: <BoxShadow>[
-                      BoxShadow(
-                        color: bottomColor,
-                        spreadRadius: 3,
-                        blurRadius: 20,
-                        offset: const Offset(0, 14),
-                      )
-                    ],
-                  ),
-                  child: const Center(
-                    child: Padding(
-                      padding: EdgeInsets.all(10),
-                      child: Text(
-                        'Ok',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            )
-          ],
-        );
-      },
-    );
-  }
-
-  void showAll({required bool isPerfectSquare, required bool isPerfectCube}) {
-    int? number;
-    int? cubeRoot;
-    int? sqrRoot;
-    String? title;
-    String? sqrEcuation;
-    String? cubeEcuation;
-    number = int.parse(_controller.text);
-
-    if (isPerfectSquare) {
-      sqrRoot = sqrt(number).toInt();
-      title = 'este patrat perfect';
-      sqrEcuation = '$number = $sqrRoot * $sqrRoot';
-      if (isPerfectCube) {
-        cubeRoot = checker.getCubeRoot(number);
-        title += ' si cub perfect.';
-        cubeEcuation = '$number = $cubeRoot * $cubeRoot * $cubeRoot';
-      } else {
-        title += ' dar nu este cub perfect';
-        cubeEcuation = 'Nu are radacina cubica';
-      }
-    } else if (!isPerfectSquare) {
-      title = 'nu este patrat perfect';
-      sqrEcuation = 'Nu are radacina patrata';
-      if (isPerfectCube) {
-        cubeRoot = checker.getCubeRoot(number);
-        title += ' dar este cub perfect.';
-        cubeEcuation = '$number = $cubeRoot * $cubeRoot * $cubeRoot';
-      } else {
-        title += ' si nici cub perfect';
-        cubeEcuation = 'Nu are radacina cubica';
-      }
-    }
-
-    showDialog<Widget>(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          backgroundColor: topColor,
-          title: Text(
-            '${_controller.text} $title',
-            textAlign: TextAlign.center,
-            style: const TextStyle(fontSize: 24, color: Colors.white),
-          ),
-          content: Text(
-            '$sqrEcuation\n$cubeEcuation',
-            textAlign: TextAlign.center,
-            style: const TextStyle(fontSize: 17, color: Colors.white),
-          ),
-          actions: <Widget>[
-            Center(
-              child: TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: Container(
-                  height: 52,
-                  width: 70,
-                  decoration: BoxDecoration(
-                    color: buttonColor,
-                    borderRadius: BorderRadius.circular(20),
-                    boxShadow: <BoxShadow>[
-                      BoxShadow(
-                        color: bottomColor,
-                        spreadRadius: 3,
-                        blurRadius: 20,
-                        offset: const Offset(0, 14),
-                      )
-                    ],
-                  ),
-                  child: const Center(
-                    child: Padding(
-                      padding: EdgeInsets.all(10),
-                      child: Text(
-                        'Ok',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            )
-          ],
-        );
-      },
     );
   }
 }
