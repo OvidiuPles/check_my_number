@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import 'package:tema3/home_page.dart';
+import 'package:tema3/ip_page.dart';
 
 void main() {
   runApp(const Tema4());
@@ -13,7 +12,7 @@ class Tema4 extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MaterialApp(
       title: 'Check my number',
-      home: HomePage(),
+      home: IpPage(),
     );
   }
 }
